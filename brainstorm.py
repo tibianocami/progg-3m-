@@ -2,126 +2,235 @@ import tkinter as tk
 from tkinter import messagebox
 
 
-# -------------------------
-# FUNZIONI LOGICHE
-# -------------------------
+# -----------------------------
+# TEMA
+# -----------------------------
 
-def crea_gantt():
+theme = {
+    "bg": "white",
+    "fg": "black",
+    "btn": "#e0e0e0"
+}
+
+
+def apply_theme(widget):
     try:
-        n = int(entry_n_gantt.get())
-
-        if n <= 0:
-            messagebox.showerror("Errore", "Numero attività non valido")
-            return
-
-        output.delete("1.0", tk.END)
-        output.insert(tk.END, "=== GANTT ===\n\n")
-
-        for i in range(n):
-            nome = f"Attività {i+1}"
-            start = i * 2
-            durata = 3
-
-            barra = "█" * durata
-            output.insert(tk.END, f"{nome:12} | {barra} ({start}-{start+durata})\n")
-
+        widget.configure(bg=theme["bg"], fg=theme["fg"])
     except:
-        messagebox.showerror("Errore", "Inserisci un numero valido")
+        pass
 
 
-def crea_preventivo():
+def set_dark():
+    theme["bg"] = "#1e1e1e"
+    theme["fg"] = "white"
+    theme["btn"] = "#333333"
+    refresh()
+
+
+def set_light():
+    theme["bg"] = "white"
+    theme["fg"] = "black"
+    theme["btn"] = "#e0e0e0"
+    refresh()
+
+
+# -----------------------------
+# PULIZIA SCHERMO
+# -----------------------------
+
+def clear():
+    for w in root.winfo_children():
+        if w not in (menu_btn, output):
+            w.destroy()
+
+
+# -----------------------------
+# HOME
+# -----------------------------
+
+def home():
+    clear()
+
+    tk.Label(root, text="GESTIONE GANTT & PREVENTIVI",
+             bg=theme["bg"], fg=theme["fg"],
+             font=("Arial", 16)).pack(pady=20)
+
+    tk.Button(root, text="GANTT",
+              bg=theme["btn"], fg=theme["fg"],
+              width=20, command=gantt_page).pack(pady=10)
+
+    tk.Button(root, text="PREVENTIVI",
+              bg=theme["btn"], fg=theme["fg"],
+              width=20, command=preventivi_page).pack(pady=10)
+
+
+# -----------------------------
+# GANTT
+# -----------------------------
+
+def gantt_page():
+    clear()
+
+    tk.Label(root, text="GANTT",
+             bg=theme["bg"], fg=theme["fg"],
+             font=("Arial", 16)).pack(pady=10)
+
+    tk.Label(root, text="Numero attività:",
+             bg=theme["bg"], fg=theme["fg"]).pack()
+
+    entry = tk.Entry(root)
+    entry.pack()
+
+    def genera():
+        try:
+            n = int(entry.get())
+            output.delete("1.0", tk.END)
+
+            output.insert(tk.END, "=== GANTT ===\n\n")
+
+            for i in range(n):
+                bar = "█" * (i + 2)
+                output.insert(tk.END, f"Task {i+1}: {bar}\n")
+
+        except:
+            messagebox.showerror("Errore", "Numero non valido")
+
+    tk.Button(root, text="Genera",
+              bg=theme["btn"], fg=theme["fg"],
+              command=genera).pack(pady=5)
+
+    tk.Button(root, text="Indietro",
+              command=home).pack(pady=5)
+
+
+# -----------------------------
+# PREVENTIVI
+# -----------------------------
+
+def preventivi_page():
+    clear()
+
+    tk.Label(root, text="PREVENTIVI",
+             bg=theme["bg"], fg=theme["fg"],
+             font=("Arial", 16)).pack(pady=10)
+
+    tk.Label(root, text="Cliente:",
+             bg=theme["bg"], fg=theme["fg"]).pack()
+
+    cliente = tk.Entry(root)
+    cliente.pack()
+
+    tk.Label(root, text="Numero servizi:",
+             bg=theme["bg"], fg=theme["fg"]).pack()
+
+    nserv = tk.Entry(root)
+    nserv.pack()
+
+    def genera():
+        try:
+            n = int(nserv.get())
+            output.delete("1.0", tk.END)
+
+            totale = 0
+
+            output.insert(tk.END, f"Cliente: {cliente.get()}\n\n")
+
+            for i in range(n):
+                prezzo = 10 * (i + 1)
+                totale += prezzo
+                output.insert(tk.END, f"Servizio {i+1} - €{prezzo}\n")
+
+            output.insert(tk.END, f"\nTOTALE: €{totale}\n")
+
+        except:
+            messagebox.showerror("Errore", "Input non valido")
+
+    tk.Button(root, text="Genera",
+              bg=theme["btn"], fg=theme["fg"],
+              command=genera).pack(pady=5)
+
+    tk.Button(root, text="Indietro",
+              command=home).pack(pady=5)
+
+
+# -----------------------------
+# INFO
+# -----------------------------
+
+def info_page():
+    clear()
+
+    text = """
+APP GANTT & PREVENTIVI
+
+Descrizione:
+App per creare Gantt e preventivi in modo semplice.
+
+Come si usa:
+- scegli una funzione dalla home
+- inserisci i dati
+- genera il risultato
+
+Contatti:
+GitHub: github.com/tuoprogetto
+Email: esempio@email.com
+"""
+
+    tk.Label(root, text="INFO",
+             bg=theme["bg"], fg=theme["fg"],
+             font=("Arial", 16)).pack(pady=10)
+
+    tk.Label(root, text=text,
+             bg=theme["bg"], fg=theme["fg"],
+             justify="left").pack()
+
+    tk.Button(root, text="Indietro",
+              command=home).pack(pady=10)
+
+
+# -----------------------------
+# MENU ☰
+# -----------------------------
+
+def open_menu():
+    m = tk.Menu(root, tearoff=0)
+    m.add_command(label="Dark Mode", command=set_dark)
+    m.add_command(label="Light Mode", command=set_light)
+    m.add_command(label="Info", command=info_page)
+
     try:
-        cliente = entry_cliente.get()
-        n = int(entry_n_servizi.get())
-
-        if cliente.strip() == "":
-            messagebox.showerror("Errore", "Cliente vuoto")
-            return
-
-        totale = 0
-
-        output.delete("1.0", tk.END)
-        output.insert(tk.END, f"=== PREVENTIVO ===\nCliente: {cliente}\n\n")
-
-        for i in range(n):
-            nome = f"Servizio {i+1}"
-            prezzo = 10 * (i + 1)
-
-            totale += prezzo
-
-            output.insert(tk.END, f"{nome} - €{prezzo}\n")
-
-        output.insert(tk.END, f"\nTOTALE: €{totale}\n")
-
-    except:
-        messagebox.showerror("Errore", "Input non valido")
+        m.tk_popup(550, 40)
+    finally:
+        m.grab_release()
 
 
-def pulisci():
-    output.delete("1.0", tk.END)
+# -----------------------------
+# REFRESH
+# -----------------------------
+
+def refresh():
+    home()
 
 
-# -------------------------
-# GUI
-# -------------------------
+# -----------------------------
+# GUI PRINCIPALE
+# -----------------------------
 
 root = tk.Tk()
 root.title("Gantt & Preventivi")
 root.geometry("600x500")
 
 
-# TITOLO
-title = tk.Label(root, text="GESTIONE PROGETTO", font=("Arial", 16))
-title.pack(pady=10)
+# MENU ☰
+menu_btn = tk.Button(root, text="☰", command=open_menu)
+menu_btn.place(x=560, y=10)
 
 
-# -------------------------
-# GANTT
-# -------------------------
-
-frame_gantt = tk.Frame(root)
-frame_gantt.pack(pady=5)
-
-tk.Label(frame_gantt, text="Numero attività Gantt:").grid(row=0, column=0)
-entry_n_gantt = tk.Entry(frame_gantt)
-entry_n_gantt.grid(row=0, column=1)
-
-tk.Button(frame_gantt, text="Crea Gantt", command=crea_gantt).grid(row=0, column=2)
-
-
-# -------------------------
-# PREVENTIVO
-# -------------------------
-
-frame_prev = tk.Frame(root)
-frame_prev.pack(pady=10)
-
-tk.Label(frame_prev, text="Cliente:").grid(row=0, column=0)
-entry_cliente = tk.Entry(frame_prev)
-entry_cliente.grid(row=0, column=1)
-
-tk.Label(frame_prev, text="N° servizi:").grid(row=1, column=0)
-entry_n_servizi = tk.Entry(frame_prev)
-entry_n_servizi.grid(row=1, column=1)
-
-tk.Button(frame_prev, text="Crea Preventivo", command=crea_preventivo).grid(row=2, column=1)
-
-
-# -------------------------
 # OUTPUT
-# -------------------------
-
-output = tk.Text(root, height=15, width=70)
-output.pack(pady=10)
+output = tk.Text(root, height=10)
+output.pack(side="bottom", fill="x")
 
 
-# -------------------------
-# BOTTONI EXTRA
-# -------------------------
-
-tk.Button(root, text="Pulisci", command=pulisci).pack()
-tk.Button(root, text="Esci", command=root.destroy).pack(pady=5)
-
-
-# AVVIO
+# START
+home()
 root.mainloop()
