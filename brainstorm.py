@@ -1,108 +1,127 @@
-#main ------------------------------------------------------
-#from gantt import crea_gantt
-#from preventivo import crea_preventivo
-
-def menu():
-    while True:
-        print("\n=== Gantt & Preventivi Generator ===")
-        print("1. Crea Gantt")
-        print("2. Crea Preventivo")
-        print("3. Esci")
-
-        scelta = input("Scelta: ")
-
-        if scelta == "1":
-            crea_gantt()
-        elif scelta == "2":
-            crea_preventivo()
-        elif scelta == "3":
-            print("Uscita...")
-            break
-        else:
-            print("Scelta non valida!")
-
-if __name__ == "__main__":
-    menu()
+import tkinter as tk
+from tkinter import messagebox
 
 
-#gantt ------------------------------------------------------
-
-#import matplotlib.pyplot as plt
+# -------------------------
+# FUNZIONI LOGICHE
+# -------------------------
 
 def crea_gantt():
-    attivita = []
-    start = []
-    durata = []
+    try:
+        n = int(entry_n_gantt.get())
 
-    print("\n--- Creazione Gantt ---")
+        if n <= 0:
+            messagebox.showerror("Errore", "Numero attività non valido")
+            return
 
-    n = int(input("Quante attività vuoi inserire? "))
+        output.delete("1.0", tk.END)
+        output.insert(tk.END, "=== GANTT ===\n\n")
 
-    for i in range(n):
-        nome = input(f"Nome attività {i+1}: ")
-        s = int(input("Giorno inizio (numero): "))
-        d = int(input("Durata (giorni): "))
+        for i in range(n):
+            nome = f"Attività {i+1}"
+            start = i * 2
+            durata = 3
 
-        attivita.append(nome)
-        start.append(s)
-        durata.append(d)
+            barra = "█" * durata
+            output.insert(tk.END, f"{nome:12} | {barra} ({start}-{start+durata})\n")
 
-    fig, ax = plt.subplots()
+    except:
+        messagebox.showerror("Errore", "Inserisci un numero valido")
 
-    ax.barh(attivita, durata, left=start)
-
-    ax.set_xlabel("Giorni")
-    ax.set_title("Diagramma di Gantt")
-
-    plt.tight_layout()
-    plt.savefig("gantt.png")
-
-    print("✅ Gantt salvato come gantt.png")
-
-#preventivo ------------------------------------------------------
-
-#from PIL import Image, ImageDraw, ImageFont
 
 def crea_preventivo():
-    print("\n--- Creazione Preventivo ---")
+    try:
+        cliente = entry_cliente.get()
+        n = int(entry_n_servizi.get())
 
-    cliente = input("Nome cliente: ")
-    n = int(input("Quanti servizi vuoi inserire? "))
+        if cliente.strip() == "":
+            messagebox.showerror("Errore", "Cliente vuoto")
+            return
 
-    servizi = []
-    totale = 0
+        totale = 0
 
-    for i in range(n):
-        nome = input(f"Servizio {i+1}: ")
-        prezzo = float(input("Prezzo: "))
-        servizi.append((nome, prezzo))
-        totale += prezzo
+        output.delete("1.0", tk.END)
+        output.insert(tk.END, f"=== PREVENTIVO ===\nCliente: {cliente}\n\n")
 
-    # crea immagine
-    img = Image.new('RGB', (600, 400), color='white')
-    draw = ImageDraw.Draw(img)
+        for i in range(n):
+            nome = f"Servizio {i+1}"
+            prezzo = 10 * (i + 1)
 
-    y = 20
-    draw.text((20, y), f"Preventivo per: {cliente}", fill='black')
-    y += 40
+            totale += prezzo
 
-    for nome, prezzo in servizi:
-        draw.text((20, y), f"{nome} - €{prezzo}", fill='black')
-        y += 30
+            output.insert(tk.END, f"{nome} - €{prezzo}\n")
 
-    y += 20
-    draw.text((20, y), f"Totale: €{totale}", fill='black')
+        output.insert(tk.END, f"\nTOTALE: €{totale}\n")
 
-    img.save("preventivo.png")
-
-    print("✅ Preventivo salvato come preventivo.png")
+    except:
+        messagebox.showerror("Errore", "Input non valido")
 
 
-    # tools.py ------------------------------------------------------
+def pulisci():
+    output.delete("1.0", tk.END)
 
-    def input_intero(messaggio):
-     while True:
-        try:
-            return int(input(messaggio))
-        except:
-            print("Inserisci un numero valido!")
+
+# -------------------------
+# GUI
+# -------------------------
+
+root = tk.Tk()
+root.title("Gantt & Preventivi")
+root.geometry("600x500")
+
+
+# TITOLO
+title = tk.Label(root, text="GESTIONE PROGETTO", font=("Arial", 16))
+title.pack(pady=10)
+
+
+# -------------------------
+# GANTT
+# -------------------------
+
+frame_gantt = tk.Frame(root)
+frame_gantt.pack(pady=5)
+
+tk.Label(frame_gantt, text="Numero attività Gantt:").grid(row=0, column=0)
+entry_n_gantt = tk.Entry(frame_gantt)
+entry_n_gantt.grid(row=0, column=1)
+
+tk.Button(frame_gantt, text="Crea Gantt", command=crea_gantt).grid(row=0, column=2)
+
+
+# -------------------------
+# PREVENTIVO
+# -------------------------
+
+frame_prev = tk.Frame(root)
+frame_prev.pack(pady=10)
+
+tk.Label(frame_prev, text="Cliente:").grid(row=0, column=0)
+entry_cliente = tk.Entry(frame_prev)
+entry_cliente.grid(row=0, column=1)
+
+tk.Label(frame_prev, text="N° servizi:").grid(row=1, column=0)
+entry_n_servizi = tk.Entry(frame_prev)
+entry_n_servizi.grid(row=1, column=1)
+
+tk.Button(frame_prev, text="Crea Preventivo", command=crea_preventivo).grid(row=2, column=1)
+
+
+# -------------------------
+# OUTPUT
+# -------------------------
+
+output = tk.Text(root, height=15, width=70)
+output.pack(pady=10)
+
+
+# -------------------------
+# BOTTONI EXTRA
+# -------------------------
+
+tk.Button(root, text="Pulisci", command=pulisci).pack()
+tk.Button(root, text="Esci", command=root.destroy).pack(pady=5)
+
+
+# AVVIO
+root.mainloop()
