@@ -50,11 +50,10 @@ matplotlib  disegna le barre del Gantt
 Pillow  crea il layout del preventivo (testo + tabelle)
 
 7. Suddivisione del lavoro
-Essendo in 4:
+Essendo in :
 Nichita Moraru: gestione menu + input utente
 Zampini Diego: Gantt (date, attività)
-Cernea Alessandro: generazione immagini Gantt (matplotlib)
-Cami Tibiano: preventivi + generazione PNG (Pillow)
+Cami Tibiano: preventivi + generazione PNG (Pillow)generazione immagini Gantt (matplotlib)
 
 8. Flusso del programma
 Menu iniziale
