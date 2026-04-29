@@ -103,3 +103,4 @@ A.A.C: gambling (se va bene prendiamo soldi extra, se va male facciamo pagare di
 
 
 per nuove ideee
+mermaidjs
