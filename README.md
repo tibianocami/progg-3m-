@@ -1,29 +1,35 @@
-Documento dei Requisiti – Progetto 3M
-1. Titolo del progetto
-Gantt & Preventivi Generator
+#B&W Market (Bet & Win)
 
-2. Obiettivo
-Il programma ci deve far creare automaticamente:
-diagrammi di Gantt esportati in PNG
-preventivi professionali esportati in PNG
-3. Attori
-Utente / Operatore  inserisce dati per Gantt o preventivo
+Benvenuto su **B&W Market**, una piattaforma di prediction market ispirata a Polymarket dove gli utenti possono creare, acquistare e scambiare previsioni su eventi reali utilizzando criptovalute e smart contracts.
 
+---
 
+##Cos'è B&W Market
+
+B&W Market permette agli utenti di fare previsioni su:
+
+-  Eventi sportivi
+-  Elezioni politiche
+-  Mercati finanziari
+-  Eventi pop e intrattenimento
+-  Eventi globali e trending topic
+
+Gli utenti possono comprare e vendere quote basate sulla probabilità che un evento accada
 4. Requisiti funzionali
-Il programma deve:
-Avviare con un menu principale
-Permettere di scegliere tra:
-Creazione Gantt
-Creazione Preventivo
-Gestire input dell’utente (date, costi, attività)
-Generare:
-Gantt come immagine PNG
-Preventivo come immagine PNG
-Salvare i file su disco
-Mostrare anteprima testuale o riepilogo
-Usare almeno un package Python esterno
-(Extra) salvare dati in file JSON
+Il programma deve permettere agli utenti di:
+
+- Registrarsi e autenticarsi tramite wallet crypto
+- Visualizzare tutti i mercati disponibili
+- Cercare eventi tramite categoria o parola chiave
+- Acquistare quote “YES” o “NO”
+- Visualizzare probabilità e andamento del mercato in tempo reale
+- Creare nuovi mercati prediction
+- Visualizzare cronologia trade e saldo wallet
+- Gestire il proprio profilo utente
+- Ricevere aggiornamenti live sugli eventi
+- Visualizzare classifiche e statistiche utenti
+- Interagire con smart contracts blockchain
+- Effettuare transazioni sicure e trasparenti
 
 5. Requisiti non funzionali
 1)Interfaccia a console chiara e semplice
@@ -56,44 +62,61 @@ Zampini Diego: Gantt (date, attività)
 Cami Tibiano: preventivi + generazione PNG (Pillow)generazione immagini Gantt (matplotlib)
 
 8. Flusso del programma
-Menu iniziale
-1 → Crea Gantt
-2 → Crea Preventivo
-3 → Esci
-Se Gantt:
-Inserimento attività
-Inserimento date
-Generazione immagine
-Se Preventivo:
-Inserimento cliente
-Inserimento servizi + costi
-Calcolo totale
-Generazione immagine
-Output finale
-File PNG salvato
+L’utente apre la piattaforma e collega il proprio wallet crypto.
+Visualizza:
+- Mercati in trend
+- Eventi recenti
+- Volume trading
+- Mercati in chiusura
+L’utente entra in un prediction market specifico.
+Può:
+- Comprare quote YES
+- Comprare quote NO
+- Vendere quote
+- Monitorare il grafico live
+Alla chiusura del mercato:
+- il sistema verifica il risultato
+- distribuisce automaticamente le vincite
+L’utente può:
+- vedere saldo
+- cronologia operazioni
+- statistiche personali
+
 
 9. Cronoprogramma (Gantt semplificato)
-Settimana 1: idea, scelta package, requisiti
-Settimana 2: progettazione + struttura codice
-Settimana 3: sviluppo Gantt + preventivi
-Settimana 4: test, miglioramenti, consegna
+Settimana 1: - Setup iniziale del progetto
+             - Configurazione repository GitHub
+             - Struttura frontend e backend
+             - Creazione database
+             - Autenticazione tramite wallet crypto
+             - Dashboard principale
+             - Visualizzazione mercati
+             - Prime funzionalità UI/UX
+             - Collegamento API e dati real-time
+             - Testing iniziale e correzione bug
+
+Settimana 2: - Sistema di acquisto/vendita quote
+             - Aggiornamento probabilità live
+             - Integrazione smart contracts
+             - Gestione saldo e transazioni
+             - Profilo utente e cronologia trade
+             - Sistema leaderboard
+             - Ottimizzazione performance
+             - Sicurezza e validazione dati
+             - Testing completo piattaforma
+             - Deploy finale e documentazione
 
 10. Note aggiuntive
  Idee extra per migliorare il progetto
 Template grafici diversi (stile moderno, aziendale)
-Esportazione anche in PDF
-Salvataggio progetti
-Modifica di un Gantt già creato
-Aggiunta colori personalizzati
-Calcolo automatico durata attività
-Logo aziendale nei preventivi
-Sconti e IVA automatici
-Timeline con milestone
-Interfaccia grafica (bonus avanzato con tkinter)
-Generare Gantt da file CSV
-Import/export dati
-Mini dashboard riepilogo
-Versione web futura (con Flask)
+- Sistema AI che analizza trend e suggerisce probabilità sugli eventi.
+- Applicazione mobile dedicata per iOS e Android.
+- Sistema di livelli, rank e achievement per gli utenti più attivi.
+- NFT premio per utenti con performance elevate nei mercati.
+- Sistema con missioni giornaliere e ricompense.
+- Supporto multi-lingua.
+- Mercati creati automaticamente tramite AI e trend social.
+- Modalità social con follow utenti e condivisione pronostici.  
 
 brain storm nuove idee —-----------------------------------------------------------------------
 
